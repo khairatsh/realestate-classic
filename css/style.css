@@ -1385,7 +1385,7 @@ body.menu-open .mobile-toggle span:nth-child(3) {
 }
 
 /* --------------------------- Reveal / Motion ----------------------------- */
-html.js [data-reveal] {
+/* html.js [data-reveal] {
     opacity: 0;
     transform: translateY(38px);
     transition: opacity 0.95s var(--ease-out), transform 0.95s var(--ease-out);
@@ -1417,7 +1417,7 @@ html.js .img-reveal {
 
 html.js .img-reveal.is-revealed {
     clip-path: inset(0);
-}
+} */
 
 @keyframes kenburns {
     from {
