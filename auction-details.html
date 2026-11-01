@@ -7,13 +7,18 @@
     <title>تفاصيل المزاد | اسم الشركة</title>
     <meta name="description" content="تفاصيل المزاد العقاري، العقارات المشاركة، ومواعيد المزايدة.">
 
+    <meta property="og:title" content="تفاصيل المزاد | اسم الشركة">
+    <meta property="og:description" content="تفاصيل المزاد العقاري والعقارات المشاركة ومواعيد المزايدة.">
+    <meta property="og:image" content="assets/images/auctions/estithmar-mecca/main.png">
+    <meta property="og:type" content="website">
+
     <link rel="icon" href="assets/logo/favicon.svg" type="image/svg+xml">
     <link rel="preload" href="infath-fonts/RuaqArabic-Light.ttf" as="font" type="font/ttf" crossorigin>
     <link rel="preload" href="infath-fonts/RuaqArabic-Medium.ttf" as="font" type="font/ttf" crossorigin>
     <link rel="preload" href="infath-fonts/RuaqArabic-Bold.ttf" as="font" type="font/ttf" crossorigin>
     <link rel="preload" href="infath-fonts/LamaSans-Regular.otf" as="font" type="font/otf" crossorigin>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
-    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/style.css?v=10">
     <script>document.documentElement.classList.add('js');</script>
 </head>
 <body>
@@ -114,12 +119,13 @@
         </div>
     </footer>
 
-    <script src="js/data.js?v=9"></script>
-    <script src="js/main.js?v=9"></script>
+    <script src="js/data.js?v=10"></script>
+    <script src="js/main.js?v=10"></script>
     <script>
         document.addEventListener('DOMContentLoaded', () => {
             const urlParams = new URLSearchParams(window.location.search);
-            const auctionId = urlParams.get('id') ? parseInt(urlParams.get('id')) : 3;
+            const fallbackId = auctionsData.length ? auctionsData[0].id : null;
+            const auctionId = urlParams.get('id') ? parseInt(urlParams.get('id'), 10) : fallbackId;
 
             const auction = auctionsData.find((a) => a.id === auctionId);
             const properties = auctionPropertiesData.filter((p) => p.auctionId === auctionId);
@@ -130,11 +136,8 @@
                 return;
             }
 
-            if (auction.endDateISO) {
-                const now = new Date();
-                const endDate = new Date(auction.endDateISO);
-                if (now > endDate) auction.status = 'منتهي';
-            }
+            // Always derive the badge from the dates, never from stale data.
+            auction.status = computeAuctionStatus(auction);
 
             renderAuctionDetails(auction, properties);
         });
@@ -142,10 +145,16 @@
         function renderAuctionDetails(auction, properties) {
             const container = document.getElementById('auction-dynamic-content');
 
-            const brochureLink = auction.brochureLink || '#';
-            const participateLink = auction.participateLink || '#';
-            const whatsappLink = 'https://wa.me/+966500000000';
-            const phoneLink = 'tel:+966500000000';
+            const brochureLink = auction.brochureLink && auction.brochureLink !== '#' ? auction.brochureLink : null;
+            const participateLink = auction.participateLink && auction.participateLink !== '#'
+                ? auction.participateLink
+                : 'contact.html';
+
+            const contact = typeof contactData !== 'undefined' ? contactData : {};
+            const waNumber = String(contact.whatsapp || '+966500000000').replace(/\D/g, '');
+            const phoneNumber = String(contact.phone || '+966920000000').replace(/\s/g, '');
+            const whatsappLink = `https://wa.me/${waNumber}`;
+            const phoneLink = `tel:${phoneNumber}`;
 
             const statusClass = auction.status === 'منتهي'
                 ? 'is-ended'
@@ -158,8 +167,8 @@
                 propertiesHTML = properties.map((prop, index) => `
                     <article class="prop-card" data-reveal data-delay="${(index % 3) * 100}">
                         <div class="prop-img">
-                            <img src="${prop.image}" alt="${prop.title}" loading="lazy"
-                                 onerror="this.style.display='none';">
+                            <img src="${prop.image}" alt="${prop.title}" loading="lazy" decoding="async"
+                                 onerror="this.onerror=null; this.src='${auction.image}';">
                         </div>
                         <div class="prop-content">
                             <h4>${prop.title}</h4>
@@ -239,7 +248,9 @@
                             ${auction.status !== 'منتهي'
                                 ? `<a href="${participateLink}" class="btn btn-auction btn-lg"><i class="bi bi-hammer" aria-hidden="true"></i> المشاركة في المزاد</a>`
                                 : `<button class="btn btn-lg btn-ended" disabled><i class="bi bi-lock" aria-hidden="true"></i> المزاد انتهى</button>`}
-                            <a href="${brochureLink}" class="btn btn-auction-outline"><i class="bi bi-file-earmark-pdf" aria-hidden="true"></i> تحميل الكتيب التسويقي (PDF)</a>
+                            ${brochureLink
+                                ? `<a href="${brochureLink}" class="btn btn-auction-outline"><i class="bi bi-file-earmark-pdf" aria-hidden="true"></i> تحميل الكتيب التسويقي (PDF)</a>`
+                                : ''}
                             <div class="action-buttons">
                                 <a href="${whatsappLink}" target="_blank" rel="noopener" class="btn btn-whatsapp"><i class="bi bi-whatsapp" aria-hidden="true"></i> واتساب</a>
                                 <a href="${phoneLink}" class="btn btn-call"><i class="bi bi-telephone" aria-hidden="true"></i> اتصال</a>

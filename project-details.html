@@ -7,9 +7,18 @@
     <title>تفاصيل المشروع | اسم الشركة</title>
     <meta name="description" content="تفاصيل المشروع، الوحدات السكنية المتاحة، والمواصفات الكاملة.">
 
+    <meta property="og:title" content="تفاصيل المشروع | اسم الشركة">
+    <meta property="og:description" content="تفاصيل المشروع والوحدات السكنية المتاحة والمواصفات الكاملة.">
+    <meta property="og:image" content="assets/images/development/aqaronaresidence1/residence-01.jpg">
+    <meta property="og:type" content="website">
+
     <link rel="icon" href="assets/logo/favicon.svg" type="image/svg+xml">
+    <link rel="preload" href="infath-fonts/RuaqArabic-Light.ttf" as="font" type="font/ttf" crossorigin>
+    <link rel="preload" href="infath-fonts/RuaqArabic-Medium.ttf" as="font" type="font/ttf" crossorigin>
+    <link rel="preload" href="infath-fonts/RuaqArabic-Bold.ttf" as="font" type="font/ttf" crossorigin>
+    <link rel="preload" href="infath-fonts/LamaSans-Regular.otf" as="font" type="font/otf" crossorigin>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
-    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/style.css?v=10">
     <script>document.documentElement.classList.add('js');</script>
 </head>
 <body>
@@ -107,8 +116,8 @@
         </div>
     </footer>
 
-    <script src="js/data.js?v=9"></script>
-    <script src="js/main.js?v=9"></script>
+    <script src="js/data.js?v=10"></script>
+    <script src="js/main.js?v=10"></script>
     <script>
         document.addEventListener('DOMContentLoaded', () => {
             const urlParams = new URLSearchParams(window.location.search);
@@ -131,8 +140,16 @@
             const accentColor = project.brandColor || '#C6A664';
             document.documentElement.style.setProperty('--proj-accent', accentColor);
 
+            const contact = typeof contactData !== 'undefined' ? contactData : {};
+            const rawWhatsapp = project.whatsappNumber && project.whatsappNumber !== '#'
+                ? project.whatsappNumber
+                : (contact.whatsapp || '+966500000000');
+            const waNumber = String(rawWhatsapp).replace(/\D/g, '');
+
             const whatsappMsg = encodeURIComponent(`السلام عليكم، أود الاستفسار عن مشروع ${project.title}`);
-            const whatsappUrl = `https://wa.me/${project.whatsappNumber || '+966500000000'}?text=${whatsappMsg}`;
+            const whatsappUrl = `https://wa.me/${waNumber}?text=${whatsappMsg}`;
+            const hasBrochure = project.brochureLink && project.brochureLink !== '#';
+            const hasMap = project.locationMapLink && project.locationMapLink !== '#';
 
             mainContainer.innerHTML = `
                 <section class="project-hero" style="background-image: url('${project.image}');">
@@ -169,8 +186,8 @@
                         </div>
 
                         <div class="proj-action-btns">
-                            ${project.brochureLink ? `<a href="${project.brochureLink}" target="_blank" rel="noopener" class="btn btn-ink"><i class="bi bi-file-earmark-pdf" aria-hidden="true"></i> تحميل بروشور المشروع (PDF)</a>` : ''}
-                            ${project.locationMapLink ? `<a href="${project.locationMapLink}" target="_blank" rel="noopener" class="btn btn-outline"><i class="bi bi-geo-alt" aria-hidden="true"></i> موقع المشروع على الخريطة</a>` : ''}
+                            ${hasBrochure ? `<a href="${project.brochureLink}" target="_blank" rel="noopener" class="btn btn-ink"><i class="bi bi-file-earmark-pdf" aria-hidden="true"></i> تحميل بروشور المشروع (PDF)</a>` : ''}
+                            ${hasMap ? `<a href="${project.locationMapLink}" target="_blank" rel="noopener" class="btn btn-outline"><i class="bi bi-geo-alt" aria-hidden="true"></i> موقع المشروع على الخريطة</a>` : ''}
                             <a href="${whatsappUrl}" target="_blank" rel="noopener" class="btn btn-whatsapp"><i class="bi bi-whatsapp" aria-hidden="true"></i> استفسر عبر الواتساب</a>
                         </div>
                     </div>
@@ -200,6 +217,11 @@
         function initUnitsGrid(project, units, accentColor) {
             const grid = document.getElementById('units-grid');
             const filterBtns = document.querySelectorAll('.unit-filter-btn');
+            const contact = typeof contactData !== 'undefined' ? contactData : {};
+            const rawWhatsapp = project.whatsappNumber && project.whatsappNumber !== '#'
+                ? project.whatsappNumber
+                : (contact.whatsapp || '+966500000000');
+            const waNumber = String(rawWhatsapp).replace(/\D/g, '');
 
             function renderUnits(filteredUnits) {
                 grid.innerHTML = '';
@@ -215,7 +237,7 @@
                     if (unit.status === 'مباعة') statusClass = 'status-sold';
 
                     const unitMsg = encodeURIComponent(`السلام عليكم، أود الاستفسار عن تفاصيل ${unit.title} في مشروع ${project.title}`);
-                    const unitWaUrl = `https://wa.me/${project.whatsappNumber || '+966500000000'}?text=${unitMsg}`;
+                    const unitWaUrl = `https://wa.me/${waNumber}?text=${unitMsg}`;
                     const isAvailable = unit.status === 'متاحة';
                     const activePositions = Array.isArray(unit.unitPosition) ? unit.unitPosition : [unit.unitPosition];
 
@@ -227,7 +249,7 @@
                         <div class="unit-img-wrapper">
                             <span class="unit-status-badge ${statusClass}">${unit.status}</span>
                             <span class="unit-type-badge">${unit.type}</span>
-                            <img src="${unit.image}" alt="${unit.title}" class="unit-img" loading="lazy"
+                            <img src="${unit.image}" alt="${unit.title}" class="unit-img" loading="lazy" decoding="async"
                                  onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxMDAlIiBoZWlnaHQ9IjEwMCUiPjxyZWN0IHdpZHRoPSIxMDAlIiBoZWlnaHQ9IjEwMCUiIGZpbGw9IiNlZmVhZTAiLz48dGV4dCB4PSI1MCUiIHk9IjUwJSIgZm9udC1zaXplPSIxOCIgZmlsbD0iIzY2NiIgZG9taW5hbnQtYmFzZWxpbmU9Im1pZGRsZSIgdGV4dC1hbmNob3I9Im1pZGRsZSI+2LXYp9ix2Kk8L3RleHQ+PC9zdmc+'">
                         </div>
                         <div class="unit-body">

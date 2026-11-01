@@ -119,6 +119,7 @@ function initHeader() {
         document.body.classList.remove('menu-open');
         navMenu?.classList.remove('open');
         mobileToggle?.setAttribute('aria-expanded', 'false');
+        mobileToggle?.setAttribute('aria-label', 'فتح القائمة');
     };
 
     if (mobileToggle && navMenu) {
@@ -127,6 +128,10 @@ function initHeader() {
             const isOpen = navMenu.classList.toggle('open');
             document.body.classList.toggle('menu-open', isOpen);
             mobileToggle.setAttribute('aria-expanded', String(isOpen));
+            mobileToggle.setAttribute('aria-label', isOpen ? 'إغلاق القائمة' : 'فتح القائمة');
+
+            // Never keep the header tucked away while the menu is open.
+            if (isOpen) header.classList.remove('hidden');
         });
 
         navMenu.querySelectorAll('a').forEach((link) => {
@@ -310,6 +315,7 @@ function initCounters() {
 function getAuctionStatusClass(status) {
     if (status === 'جاري') return 'status-live';
     if (status === 'منتهي') return 'status-ended';
+    if (status === 'قريبًا') return 'status-upcoming';
     return '';
 }
 
@@ -362,16 +368,7 @@ function renderFeaturedAuctions() {
     auctionsContainer.innerHTML = '';
 
     auctionsData.slice(0, 3).forEach((auction, index) => {
-        if (auction.startDateISO && auction.endDateISO) {
-            const now = new Date();
-            const startDate = new Date(auction.startDateISO);
-            const endDate = new Date(auction.endDateISO);
-
-            if (now < startDate) auction.status = 'قريبًا';
-            else if (now >= startDate && now <= endDate) auction.status = 'جاري';
-            else if (now > endDate) auction.status = 'منتهي';
-        }
-
+        auction.status = computeAuctionStatus(auction);
         auctionsContainer.insertAdjacentHTML('beforeend', auctionCardHTML(auction, index));
     });
 

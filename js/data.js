@@ -3,8 +3,8 @@
 // 1. بيانات إحصائيات الشركة
 const companyStats = [
     { value: 50, prefix: "+", label: "مزادًا تم تنفيذه" },
-    { value: 1500, prefix: "+", suffix: "M", label: "مزادات تجاوزت المليار" },
-    { value: 5, prefix: "+", suffix: "M", label: "قيمة عقارية (ريال)" },
+    { value: 1.5, prefix: "", suffix: "B+", label: "قيمة مزادات (ريال)" },
+    { value: 22, prefix: "", label: "وحدة سكنية قيد التطوير" },
     { value: 2, prefix: "", label: "مشروعًا عقاريًا" }
 ];
 
@@ -74,12 +74,34 @@ const auctionsData = [
         start: "15 أكتوبر 2026 | 09:00 صباحا",
         end: "18 أكتوبر 2026 | 18:00 مساءً",
         // الأسطر المسؤولة عن الأتمتة:
-        startDateISO: "2026-10-11T09:00:00", // وقت البداية
-        endDateISO: "2026-10-15T18:00:00",   // وقت النهاية
+        startDateISO: "2026-10-15T09:00:00", // وقت البداية
+        endDateISO: "2026-10-18T18:00:00",   // وقت النهاية
         brochureLink: "#", // رابط الكتيب الخاص بجدة
         participateLink: "#" // رابط المشاركة الخاص بجدة
     }
 ];
+
+/* Single source of truth for auction status.
+   Previously each page calculated (or forgot to calculate) this itself,
+   which is why auction detail pages rendered an "undefined" badge. */
+function computeAuctionStatus(auction, now = new Date()) {
+    if (!auction) return '';
+
+    if (auction.startDateISO && auction.endDateISO) {
+        const startDate = new Date(auction.startDateISO);
+        const endDate = new Date(auction.endDateISO);
+
+        if (now < startDate) return 'قريبًا';
+        if (now <= endDate) return 'جاري';
+        return 'منتهي';
+    }
+
+    return auction.status || '';
+}
+
+auctionsData.forEach((auction) => {
+    auction.status = computeAuctionStatus(auction);
+});
 
 
 // 4. بيانات العقارات التابعة لكل مزاد
@@ -95,7 +117,7 @@ const auctionPropertiesData = [
         area: "200.54 متر مربع",
         deedNumber: "xxxxxx", // رقم الصك
         description: "فندق .",
-        image: "assets/images/auctions/estithmar-mecca/1.jpeg"
+        image: "assets/images/auctions/estithmar-mecca/main.png"
     },
     {
         id: 204,
@@ -104,7 +126,7 @@ const auctionPropertiesData = [
         area: "50,000 متر مربع",
         deedNumber: "xxxxxxxxx", // رقم الصك
         description: "أرض خام .",
-        image: "assets/images/auctions/estithmar-mecca/4.jpeg"
+        image: "assets/images/auctions/estithmar-mecca/main.png"
     },
     {
         id: 205,
@@ -113,7 +135,7 @@ const auctionPropertiesData = [
         area: "200 متر مربع",
         deedNumber: "xxxxxx", // رقم الصك
         description: "عمارة سكنية تجارية .",
-        image: "assets/images/auctions/estithmar-mecca/5.jpeg"
+        image: "assets/images/auctions/estithmar-mecca/main.png"
     },
     {
         id: 206,
@@ -122,7 +144,7 @@ const auctionPropertiesData = [
         area: "200 متر مربع",
         deedNumber: "xxxxxxxxx", // رقم الصك
         description: "عمارة سكنية .",
-        image: "assets/images/auctions/estithmar-mecca/6.jpeg"
+        image: "assets/images/auctions/estithmar-mecca/main.png"
     },
     {
         id: 207,
@@ -131,7 +153,7 @@ const auctionPropertiesData = [
         area: "800 متر مربع",
         deedNumber: "xxxxxxxxxxxxx", // رقم الصك
         description: "عمارة سكنية .",
-        image: "assets/images/auctions/estithmar-mecca/7.jpeg"
+        image: "assets/images/auctions/estithmar-mecca/main.png"
     }
 
 ]
@@ -157,8 +179,8 @@ const projectsData = [
         url: "project-details.html?id=1",
         description: "مساحات سكنية صُممت لتمنحك تجربة حياة مختلفة. يجمع المشروع بين جودة التصميم وقيمة الموقع.",
         brochureLink: "#",
-        locationMapLink: "#", 
-        whatsappNumber: "#",
+        locationMapLink: "#",
+        whatsappNumber: "+966500000000",
         // الأسطر الجديدة للمميزات البارزة في الصفحة الرئيسية
         features: ["Smart Entry", "Private Parking", "Double Glazing", "Wide Windows"]
     },
@@ -176,7 +198,7 @@ const projectUnitsData = [
         bathrooms: "3 دورات مياه",
         price: "450,000",
         status: "محجوزة", // متاحة | محجوزة | مباعة
-        image: "assets/images/development/aqaronaresidence1/01.jpg",
+        image: "assets/images/development/aqaronaresidence1/residence-01.jpg",
         features: "دخول ذكي | موقف خاص",
         unitPosition: 1 // <-- أضف هذا السطر (مثلاً 3 تعني أسفل اليمين كما في صورتك)
     },
@@ -190,7 +212,7 @@ const projectUnitsData = [
         bathrooms: "3 دورات مياه",
         price: "480,000",
         status: "محجوزة", // متاحة | محجوزة | مباعة
-        image: "assets/images/development/aqaronaresidence1/02.jpg",
+        image: "assets/images/development/aqaronaresidence1/residence-01.jpg",
         features: "دخول ذكي | موقف خاص",
         unitPosition: 2 // <-- أضف هذا السطر (مثلاً 3 تعني أسفل اليمين كما في صورتك)
     },
@@ -204,7 +226,7 @@ const projectUnitsData = [
         bathrooms: "3 دورات مياه",
         price: "450,000",
         status: "محجوزة", // متاحة | محجوزة | مباعة
-        image: "assets/images/development/aqaronaresidence1/03.jpg",
+        image: "assets/images/development/aqaronaresidence1/residence-01.jpg",
         features: "دخول ذكي | موقف خاص",
         unitPosition: 3 // <-- أضف هذا السطر (مثلاً 3 تعني أسفل اليمين كما في صورتك)
     },
@@ -218,7 +240,7 @@ const projectUnitsData = [
         bathrooms: "3 دورات مياه",
         price: "480,000",
         status: "محجوزة", // متاحة | محجوزة | مباعة
-        image: "assets/images/development/aqaronaresidence1/04.jpg",
+        image: "assets/images/development/aqaronaresidence1/residence-01.jpg",
         features: "دخول ذكي | موقف خاص",
         unitPosition: 4 // <-- أضف هذا السطر (مثلاً 3 تعني أسفل اليمين كما في صورتك)
     },
@@ -232,7 +254,7 @@ const projectUnitsData = [
         bathrooms: "3 دورات مياه",
         price: "450,000",
         status: "مباعة", // متاحة | محجوزة | مباعة
-        image: "assets/images/development/aqaronaresidence1/05-9-13-17.jpg",
+        image: "assets/images/development/aqaronaresidence1/residence-01.jpg",
         features: "دخول ذكي | موقف خاص",
         unitPosition: 1 // <-- أضف هذا السطر (مثلاً 3 تعني أسفل اليمين كما في صورتك)
     },
@@ -246,7 +268,7 @@ const projectUnitsData = [
         bathrooms: "3 دورات مياه",
         price: "480,000",
         status: "متاحة", // متاحة | محجوزة | مباعة
-        image: "assets/images/development/aqaronaresidence1/06-10-14-18.jpg",
+        image: "assets/images/development/aqaronaresidence1/residence-01.jpg",
         features: "دخول ذكي | موقف خاص",
         unitPosition: 2 // <-- أضف هذا السطر (مثلاً 3 تعني أسفل اليمين كما في صورتك)
     },
@@ -260,7 +282,7 @@ const projectUnitsData = [
         bathrooms: "3 دورات مياه",
         price: "450,000",
         status: "مباعة", // متاحة | محجوزة | مباعة
-        image: "assets/images/development/aqaronaresidence1/07-11-15-19.jpg",
+        image: "assets/images/development/aqaronaresidence1/residence-01.jpg",
         features: "دخول ذكي | موقف خاص",
         unitPosition: 3 // <-- أضف هذا السطر (مثلاً 3 تعني أسفل اليمين كما في صورتك)
     },
@@ -274,7 +296,7 @@ const projectUnitsData = [
         bathrooms: "3 دورات مياه",
         price: "480,000",
         status: "متاحة", // متاحة | محجوزة | مباعة
-        image: "assets/images/development/aqaronaresidence1/08-12-16-20.jpg",
+        image: "assets/images/development/aqaronaresidence1/residence-01.jpg",
         features: "دخول ذكي | موقف خاص",
         unitPosition: 4 // <-- أضف هذا السطر (مثلاً 3 تعني أسفل اليمين كما في صورتك)
     },
@@ -288,7 +310,7 @@ const projectUnitsData = [
         bathrooms: "3 دورات مياه",
         price: "450,000",
         status: "مباعة", // متاحة | محجوزة | مباعة
-        image: "assets/images/development/aqaronaresidence1/05-9-13-17.jpg",
+        image: "assets/images/development/aqaronaresidence1/residence-01.jpg",
         features: "دخول ذكي | موقف خاص",
         unitPosition: 1 // <-- أضف هذا السطر (مثلاً 3 تعني أسفل اليمين كما في صورتك)
     },
@@ -302,7 +324,7 @@ const projectUnitsData = [
         bathrooms: "3 دورات مياه",
         price: "480,000",
         status: "متاحة", // متاحة | محجوزة | مباعة
-        image: "assets/images/development/aqaronaresidence1/06-10-14-18.jpg",
+        image: "assets/images/development/aqaronaresidence1/residence-01.jpg",
         features: "دخول ذكي | موقف خاص",
         unitPosition: [3,4]
     }

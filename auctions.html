@@ -7,13 +7,18 @@
     <title>المزادات العقارية | اسم الشركة</title>
     <meta name="description" content="اكتشف الفرص العقارية القادمة وشارك في مزادات اسم الشركة. فرص عقارية استثنائية تُدار باحترافية في السوق السعودي.">
 
+    <meta property="og:title" content="المزادات العقارية | اسم الشركة">
+    <meta property="og:description" content="فرص عقارية استثنائية تُدار باحترافية في السوق السعودي.">
+    <meta property="og:image" content="assets/images/auctions/estithmar-mecca/main.png">
+    <meta property="og:type" content="website">
+
     <link rel="icon" href="assets/logo/favicon.svg" type="image/svg+xml">
     <link rel="preload" href="infath-fonts/RuaqArabic-Light.ttf" as="font" type="font/ttf" crossorigin>
     <link rel="preload" href="infath-fonts/RuaqArabic-Medium.ttf" as="font" type="font/ttf" crossorigin>
     <link rel="preload" href="infath-fonts/RuaqArabic-Bold.ttf" as="font" type="font/ttf" crossorigin>
     <link rel="preload" href="infath-fonts/LamaSans-Regular.otf" as="font" type="font/otf" crossorigin>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
-    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/style.css?v=10">
     <script>document.documentElement.classList.add('js');</script>
 </head>
 <body>
@@ -151,8 +156,8 @@
         </div>
     </footer>
 
-    <script src="js/data.js?v=9"></script>
-    <script src="js/main.js?v=9"></script>
+    <script src="js/data.js?v=10"></script>
+    <script src="js/main.js?v=10"></script>
     <script>
         document.addEventListener('DOMContentLoaded', () => {
             const grid = document.getElementById('auctions-page-grid');
@@ -167,17 +172,9 @@
                 return;
             }
 
-            // 1) Auto status based on current date
-            const now = new Date();
+            // 1) Auto status based on current date (shared helper from data.js)
             auctionsData.forEach((auction) => {
-                if (auction.startDateISO && auction.endDateISO) {
-                    const startDate = new Date(auction.startDateISO);
-                    const endDate = new Date(auction.endDateISO);
-
-                    if (now < startDate) auction.status = 'قريبًا';
-                    else if (now >= startDate && now <= endDate) auction.status = 'جاري';
-                    else if (now > endDate) auction.status = 'منتهي';
-                }
+                auction.status = computeAuctionStatus(auction);
             });
 
             // 2) Dynamic filter buttons
@@ -271,7 +268,9 @@
             const heroCount = document.getElementById('hero-auctions-count');
             if (heroCount) {
                 const activeCount = auctionsData.filter((a) => a.status === 'جاري').length;
-                heroCount.textContent = activeCount > 0 ? `${activeCount} Live Auctions` : 'Auction Collection';
+                heroCount.textContent = activeCount === 0
+                    ? 'Auction Collection'
+                    : `${activeCount} Live Auction${activeCount === 1 ? '' : 's'}`;
             }
         });
     </script>

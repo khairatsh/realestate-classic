@@ -5,8 +5,8 @@
 
 @import url('https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=Tajawal:wght@200;300;400;500;700;800&display=swap');
 
-@import url('components.css');
-@import url('pages.css');
+@import url('components.css?v=10');
+@import url('pages.css?v=10');
 
 /* Auction identity typeface — Ruaq Arabic */
 @font-face {
@@ -235,6 +235,11 @@ p {
 .section {
     position: relative;
     padding-block: clamp(4.5rem, 9vw, 8rem);
+}
+
+/* Fixed header must not cover anchor targets (e.g. "اكتشف مشاريعنا"). */
+.section[id] {
+    scroll-margin-top: calc(var(--header-h) + 1.5rem);
 }
 
 .section-ivory {
@@ -484,9 +489,21 @@ p {
     z-index: 1000;
     height: var(--header-h);
     color: var(--paper);
-    transition: height 0.5s var(--ease), background-color 0.5s var(--ease),
-        color 0.5s var(--ease), box-shadow 0.5s var(--ease),
-        transform 0.55s var(--ease);
+    transition: height 0.5s var(--ease), color 0.5s var(--ease),
+        box-shadow 0.5s var(--ease), transform 0.55s var(--ease);
+}
+
+/* The blurred backdrop lives on a pseudo-element. Applying backdrop-filter
+   directly to the header would make it the containing block for the fixed
+   mobile menu, collapsing the overlay to the header's own height. */
+.site-header::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    background: transparent;
+    transition: background-color 0.5s var(--ease), backdrop-filter 0.5s var(--ease);
+    pointer-events: none;
 }
 
 .site-header::after {
@@ -516,6 +533,12 @@ p {
     gap: 0.85rem;
     color: inherit;
     flex: none;
+}
+
+/* Keep the brand above the full-screen mobile menu overlay. */
+.site-header .brand {
+    position: relative;
+    z-index: 1101;
 }
 
 .brand-mark {
@@ -614,11 +637,14 @@ p {
 
 .site-header.scrolled {
     height: var(--header-h-sm);
+    color: var(--ink);
+    box-shadow: 0 1px 0 var(--line), 0 18px 45px rgba(0, 0, 0, 0.05);
+}
+
+.site-header.scrolled::before {
     background: rgba(255, 255, 255, 0.94);
     -webkit-backdrop-filter: blur(18px);
     backdrop-filter: blur(18px);
-    color: var(--ink);
-    box-shadow: 0 1px 0 var(--line), 0 18px 45px rgba(0, 0, 0, 0.05);
 }
 
 .site-header.scrolled::after {
@@ -644,7 +670,7 @@ p {
 }
 
 .site-header.scrolled .btn-outline-light:hover {
-    color: var(--paper);
+    color: var(--ink);
     border-color: var(--ink);
 }
 
@@ -765,11 +791,18 @@ body.menu-open .mobile-toggle span:nth-child(3) {
 .hero-title .line {
     display: block;
     overflow: hidden;
+    /* Arabic ascenders/descenders extend past a 1.12 line box; keep a little
+       breathing room while the reveal mask is active. */
+    padding-block: 0.14em;
+    margin-block: -0.14em;
+    /* Release the mask once both lines have finished rising, otherwise the
+       glyph tails stay clipped at rest. */
+    animation: line-clip-release 0.01s linear 1.55s forwards;
 }
 
 .hero-title .line > span {
     display: block;
-    transform: translateY(110%);
+    transform: translateY(130%);
     animation: line-up 1.15s var(--ease-out) forwards;
 }
 
@@ -1401,6 +1434,12 @@ html.js .img-reveal.is-revealed {
     }
 }
 
+@keyframes line-clip-release {
+    to {
+        overflow: visible;
+    }
+}
+
 @keyframes fade-up {
     from {
         opacity: 0;
@@ -1623,9 +1662,17 @@ html.js .img-reveal.is-revealed {
 
     body.menu-open .site-header,
     body.menu-open .site-header.scrolled {
+        transform: none;
         background: transparent;
         box-shadow: none;
         color: var(--paper);
+    }
+
+    body.menu-open .site-header::before,
+    body.menu-open .site-header.scrolled::before {
+        background: transparent;
+        -webkit-backdrop-filter: none;
+        backdrop-filter: none;
     }
 
     body.menu-open .site-header .brand-mark {
@@ -1707,8 +1754,21 @@ html.js .img-reveal.is-revealed {
         min-height: 100svh;
     }
 
+    /* The English eyebrow is long; without these tweaks it wraps to two
+       awkward lines on 360–390px screens. */
+    .hero .eyebrow {
+        font-size: 0.66rem;
+        letter-spacing: 0.14em;
+        gap: 0.45rem;
+        white-space: nowrap;
+    }
+
+    .hero .eyebrow::before {
+        width: 20px;
+    }
+
     .hero-title {
-        font-size: clamp(2.5rem, 12vw, 3.4rem);
+        font-size: clamp(2.35rem, 11.6vw, 3.4rem);
     }
 
     .hero-desc {
@@ -1759,6 +1819,25 @@ html.js .img-reveal.is-revealed {
     }
 }
 
+/* Short phones (e.g. 320×568): keep the hero CTA above the fold. */
+@media (max-width: 680px) and (max-height: 700px) {
+    .hero-inner {
+        padding-top: calc(var(--header-h) + 1rem);
+    }
+
+    .hero-copy {
+        padding-block: 1.5rem;
+    }
+
+    .hero-title {
+        margin-block: 1.1rem 1.2rem;
+    }
+
+    .hero-desc {
+        margin-bottom: 1.8rem;
+    }
+}
+
 @media (max-width: 400px) {
     .stats-grid {
         grid-template-columns: 1fr;
@@ -1795,6 +1874,11 @@ html.js .img-reveal.is-revealed {
 
     .hero-title .line > span {
         transform: none;
+    }
+
+    .hero-title .line {
+        overflow: visible;
+        animation: none;
     }
 }
 
