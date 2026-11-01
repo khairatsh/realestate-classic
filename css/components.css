@@ -31,8 +31,8 @@
     inset: 0;
     z-index: -1;
     background:
-        linear-gradient(270deg, rgba(5, 5, 5, 0.9) 0%, rgba(5, 5, 5, 0.58) 48%, rgba(5, 5, 5, 0.2) 100%),
-        linear-gradient(to top, rgba(5, 5, 5, 0.9) 0%, transparent 55%);
+        linear-gradient(270deg, rgba(10, 10, 10, 0.94) 0%, rgba(10, 10, 10, 0.72) 48%, rgba(10, 10, 10, 0.32) 100%),
+        linear-gradient(to top, rgba(10, 10, 10, 0.96) 0%, transparent 58%);
 }
 
 .page-hero--auction {
@@ -41,8 +41,8 @@
 
 .page-hero--auction::before {
     background:
-        linear-gradient(270deg, rgba(0, 55, 96, 0.95) 0%, rgba(0, 55, 96, 0.74) 48%, rgba(0, 165, 163, 0.34) 100%),
-        linear-gradient(to top, rgba(0, 55, 96, 0.94) 0%, transparent 58%);
+        linear-gradient(270deg, rgba(0, 54, 93, 0.96) 0%, rgba(0, 54, 93, 0.76) 48%, rgba(0, 165, 163, 0.32) 100%),
+        linear-gradient(to top, rgba(0, 54, 93, 0.96) 0%, transparent 58%);
 }
 
 .page-hero-inner {
@@ -178,13 +178,13 @@
     content: '';
     position: absolute;
     inset: 0;
-    background: linear-gradient(to top, rgba(0, 55, 96, 0.55), transparent 48%);
+    background: linear-gradient(to top, rgba(0, 54, 93, 0.55), transparent 48%);
     pointer-events: none;
 }
 
 .auction-image-wrapper.image-missing {
     background:
-        linear-gradient(135deg, rgba(0, 55, 96, 0.94), rgba(0, 165, 163, 0.55)),
+        linear-gradient(135deg, rgba(0, 54, 93, 0.94), rgba(0, 165, 163, 0.55)),
         var(--auction-dark);
 }
 
@@ -238,12 +238,12 @@
 }
 
 .auction-status.status-ended {
-    background: rgba(0, 55, 96, 0.55);
+    background: rgba(0, 54, 93, 0.55);
     border-color: rgba(255, 255, 255, 0.24);
 }
 
 .auction-status.status-upcoming {
-    background: rgba(0, 55, 96, 0.55);
+    background: rgba(0, 54, 93, 0.55);
     border-color: var(--auction-teal-line);
 }
 
@@ -338,7 +338,7 @@
 }
 
 .btn-auction {
-    background: var(--auction-dark);
+    background: var(--auction-teal);
     color: var(--paper);
 }
 
@@ -352,7 +352,8 @@
 
 .btn-auction-outline {
     border-color: var(--auction-line-strong);
-    color: var(--auction-dark);
+    color: var(--paper);
+    background: var(--auction-dark);
 }
 
 .btn-auction-outline::before {
@@ -371,25 +372,18 @@
 
 .project-feature {
     display: grid;
-    grid-template-columns: 1.18fr 0.82fr;
-    min-height: 560px;
+    grid-template-columns: 1.2fr 0.8fr;
+    min-height: 540px;
     background: var(--paper);
     border: 1px solid var(--line);
     margin-bottom: clamp(2rem, 4vw, 3rem);
     overflow: hidden;
-    transition: border-color 0.5s var(--ease), box-shadow 0.6s var(--ease);
+    transition: border-color 0.4s var(--ease), box-shadow 0.5s var(--ease);
 }
 
 .project-feature:hover {
-    border-color: rgba(198, 166, 100, 0.45);
-    box-shadow: 0 40px 90px rgba(11, 11, 11, 0.08);
-}
-
-.project-feature-media {
-    position: relative;
-    min-height: 420px;
-    overflow: hidden;
-    background: var(--ivory-2) url('../assets/images/development/aqaronaresidence1/hero.jpg') center / cover no-repeat;
+    border-color: rgba(185, 160, 126, 0.5);
+    box-shadow: 0 30px 70px rgba(15, 15, 15, 0.06);
 }
 
 .project-feature.is-reversed .project-feature-media {
@@ -398,6 +392,13 @@
 
 .project-feature.is-reversed .project-feature-body {
     order: 1;
+}
+
+.project-feature-media {
+    position: relative;
+    min-height: 420px;
+    overflow: hidden;
+    background: var(--ivory-2) url('../assets/images/development/aqaronaresidence1/hero.jpg') center / cover no-repeat;
 }
 
 .project-feature-media img {
@@ -417,7 +418,7 @@
     content: '';
     position: absolute;
     inset: 0;
-    background: linear-gradient(to top, rgba(0, 0, 0, 0.42), transparent 50%);
+    background: linear-gradient(to top, rgba(0, 0, 0, 0.38), transparent 52%);
     pointer-events: none;
 }
 
@@ -427,9 +428,9 @@
     inset-inline-start: 1.2rem;
     z-index: 2;
     padding: 0.4rem 1rem;
-    background: rgba(255, 255, 255, 0.92);
-    -webkit-backdrop-filter: blur(8px);
-    backdrop-filter: blur(8px);
+    background: rgba(255, 255, 255, 0.96);
+    -webkit-backdrop-filter: blur(10px);
+    backdrop-filter: blur(10px);
     color: var(--ink);
     font-size: 0.75rem;
     font-weight: 500;
@@ -532,14 +533,14 @@
     color: var(--muted);
     direction: ltr;
     font-family: var(--font-latin);
-    letter-spacing: 0.08em;
+    letter-spacing: 0.06em;
 }
 
 .project-features li::before {
     content: '';
     width: 4px;
     height: 4px;
-    background: var(--gold);
+    background: var(--accent);
     transform: rotate(45deg);
     flex: none;
 }
@@ -555,7 +556,7 @@
     gap: 0.45rem;
     padding: 0.38rem 0.85rem;
     border: 1px solid var(--line);
-    background: var(--ivory);
+    background: var(--bg);
     color: var(--muted);
     font-size: 0.78rem;
 }

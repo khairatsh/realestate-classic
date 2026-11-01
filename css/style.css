@@ -1,12 +1,12 @@
 /* ==========================================================================
-   LUXURY DESIGN SYSTEM — اسم الشركة
+   MODERN ELEGANT DESIGN SYSTEM — اسم الشركة
    Real Estate · Auctions · Development
    ========================================================================== */
 
-@import url('https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=Tajawal:wght@200;300;400;500;700;800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Jost:wght@300;400;500;600;700&family=Tajawal:wght@300;400;500;700&display=swap');
 
-@import url('components.css?v=10');
-@import url('pages.css?v=10');
+@import url('components.css?v=11');
+@import url('pages.css?v=11');
 
 /* Auction identity typeface — Ruaq Arabic */
 @font-face {
@@ -73,53 +73,66 @@
 
 /* ------------------------------- Tokens ---------------------------------- */
 :root {
-    --ink: #0B0B0B;
-    --ink-2: #141414;
-    --ink-3: #1D1D1D;
+    /* Surfaces */
+    --ink: #151515;
+    --ink-2: #1f1f1f;
+    --ink-3: #262626;
     --paper: #FFFFFF;
-    --ivory: #F7F4EE;
-    --ivory-2: #EFEAE0;
-    --line: rgba(11, 11, 11, 0.12);
-    --line-soft: rgba(11, 11, 11, 0.07);
-    --line-light: rgba(255, 255, 255, 0.16);
+    --bg: #F8F9FA;
+    --ivory: #F8F9FA;
+    --ivory-2: #F1F3F5;
 
-    --gold: #C6A664;
-    --gold-2: #E3CFA0;
-    --gold-deep: #9C7B3C;
-    --gold-glow: rgba(198, 166, 100, 0.22);
+    /* Lines */
+    --line: rgba(21, 21, 21, 0.08);
+    --line-soft: rgba(21, 21, 21, 0.06);
+    --line-light: rgba(255, 255, 255, 0.14);
 
-    --text: #161616;
-    --muted: #756F66;
-    --muted-2: #A29B90;
+    /* Accent - Modern Elegant */
+    --accent: #B9A07E;
+    --accent-2: #C9B49A;
+    --accent-deep: #9F8B6A;
+    --accent-glow: rgba(185, 160, 126, 0.16);
 
-    /* Auction identity — two-color system (#003760 / #00A5A3) */
-    --auction-dark: #003760;
+    /* Legacy names mapped to new accent for minimal edits */
+    --gold: var(--accent);
+    --gold-2: var(--accent-2);
+    --gold-deep: var(--accent-deep);
+    --gold-glow: var(--accent-glow);
+
+    /* Text */
+    --text: #1F1F1F;
+    --muted: #6B6B6B;
+    --muted-2: #8F8F8F;
+
+    /* Auction identity — DO NOT CHANGE */
+    --auction-dark: #00365D;
     --auction-teal: #00A5A3;
     /* Legacy alias kept so every auction component resolves to navy. */
     --auction-blue: var(--auction-dark);
-    --auction-ink-soft: rgba(0, 55, 96, 0.72);
-    --auction-ink-faint: rgba(0, 55, 96, 0.5);
-    --auction-line: rgba(0, 55, 96, 0.14);
-    --auction-line-strong: rgba(0, 55, 96, 0.28);
-    --auction-teal-wash: rgba(0, 165, 163, 0.07);
-    --auction-teal-line: rgba(0, 165, 163, 0.26);
-    --auction-shadow: rgba(0, 55, 96, 0.14);
+    --auction-ink-soft: rgba(0, 54, 93, 0.78);
+    --auction-ink-faint: rgba(0, 54, 93, 0.58);
+    --auction-line: rgba(0, 54, 93, 0.12);
+    --auction-line-strong: rgba(0, 54, 93, 0.24);
+    --auction-teal-wash: rgba(0, 165, 163, 0.06);
+    --auction-teal-line: rgba(0, 165, 163, 0.28);
+    --auction-shadow: rgba(0, 54, 93, 0.12);
 
     /* Project accent */
-    --proj-accent: #C6A664;
+    --proj-accent: #B9A07E;
 
+    /* Typography */
     --font-body: 'Tajawal', 'Segoe UI', sans-serif;
-    --font-display: 'Amiri', 'Times New Roman', serif;
-    --font-latin: 'Cormorant Garamond', 'Times New Roman', serif;
+    --font-display: 'Jost', 'Tajawal', sans-serif;
+    --font-latin: 'Inter', 'Jost', sans-serif;
     /* Lama Sans carries digits/numeric punctuation (restricted unicode-range);
        Arabic copy falls through to Ruaq. */
     --font-auction: 'Lama Sans', 'Ruaq Arabic', 'Tajawal', 'Segoe UI', sans-serif;
 
     --container: 1280px;
     --header-h: 88px;
-    --header-h-sm: 72px;
+    --header-h-sm: 76px;
 
-    --ease: cubic-bezier(0.22, 0.61, 0.36, 1);
+    --ease: cubic-bezier(0.25, 0.8, 0.25, 1);
     --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
 }
 
@@ -142,7 +155,7 @@ body {
     background: var(--paper);
     color: var(--text);
     direction: rtl;
-    line-height: 1.8;
+    line-height: 1.9;
     font-weight: 400;
     overflow-x: hidden;
     -webkit-font-smoothing: antialiased;
@@ -216,8 +229,9 @@ h3,
 h4,
 h5 {
     font-family: var(--font-display);
-    font-weight: 400;
-    line-height: 1.32;
+    font-weight: 500;
+    line-height: 1.16;
+    letter-spacing: -0.01em;
     color: var(--text);
 }
 
@@ -243,11 +257,11 @@ p {
 }
 
 .section-ivory {
-    background: var(--ivory);
+    background: var(--bg);
 }
 
 .section-bone {
-    background: #FBFBF9;
+    background: var(--paper);
 }
 
 .section-ink {
@@ -345,20 +359,19 @@ p {
     align-items: center;
     justify-content: center;
     gap: 0.7rem;
-    padding: 1.05rem 2.1rem;
+    padding: 1rem 2rem;
     font-family: var(--font-body);
     font-size: 0.95rem;
     font-weight: 500;
     line-height: 1;
-    color: var(--ink);
     border: 1px solid transparent;
     border-radius: 0;
     overflow: hidden;
     isolation: isolate;
     cursor: pointer;
     white-space: nowrap;
-    transition: color 0.45s var(--ease), border-color 0.45s var(--ease),
-        background-color 0.45s var(--ease), transform 0.45s var(--ease);
+    transition: color 0.4s var(--ease), border-color 0.4s var(--ease),
+        background-color 0.4s var(--ease), transform 0.4s var(--ease);
 }
 
 .btn::before {
@@ -387,7 +400,7 @@ p {
 }
 
 .btn-gold {
-    background: var(--gold);
+    background: var(--accent);
     color: var(--ink);
 }
 
@@ -396,7 +409,7 @@ p {
 }
 
 .btn-gold:hover {
-    color: var(--gold-2);
+    color: var(--paper);
 }
 
 .btn-ink {
@@ -409,7 +422,7 @@ p {
 }
 
 .btn-outline {
-    border-color: var(--ink);
+    border-color: rgba(21, 21, 21, 0.4);
     color: var(--ink);
 }
 
@@ -422,13 +435,13 @@ p {
 }
 
 .btn-outline-light {
-    border-color: rgba(255, 255, 255, 0.45);
+    border-color: rgba(255, 255, 255, 0.5);
     color: var(--paper);
 }
 
 .btn-outline-light:hover {
     color: var(--ink);
-    border-color: var(--gold);
+    border-color: var(--accent);
 }
 
 .btn-block {
@@ -512,7 +525,7 @@ p {
     inset-inline: 0;
     bottom: 0;
     height: 1px;
-    background: rgba(255, 255, 255, 0.16);
+    background: rgba(255, 255, 255, 0.08);
     transition: background-color 0.5s var(--ease);
 }
 
@@ -569,7 +582,7 @@ p {
 .brand-name {
     font-family: var(--font-display);
     font-size: 1.55rem;
-    font-weight: 700;
+    font-weight: 600;
     color: inherit;
     letter-spacing: 0;
 }
@@ -638,13 +651,13 @@ p {
 .site-header.scrolled {
     height: var(--header-h-sm);
     color: var(--ink);
-    box-shadow: 0 1px 0 var(--line), 0 18px 45px rgba(0, 0, 0, 0.05);
+    box-shadow: 0 1px 0 var(--line), 0 10px 40px rgba(15, 15, 15, 0.02);
 }
 
 .site-header.scrolled::before {
-    background: rgba(255, 255, 255, 0.94);
-    -webkit-backdrop-filter: blur(18px);
-    backdrop-filter: blur(18px);
+    background: rgba(255, 255, 255, 0.98);
+    -webkit-backdrop-filter: blur(14px);
+    backdrop-filter: blur(14px);
 }
 
 .site-header.scrolled::after {
@@ -665,12 +678,12 @@ p {
 }
 
 .site-header.scrolled .btn-outline-light {
-    border-color: var(--ink);
+    border-color: rgba(21, 21, 21, 0.4);
     color: var(--ink);
 }
 
 .site-header.scrolled .btn-outline-light:hover {
-    color: var(--ink);
+    color: var(--paper);
     border-color: var(--ink);
 }
 
@@ -755,8 +768,8 @@ body.menu-open .mobile-toggle span:nth-child(3) {
     inset: 0;
     z-index: -2;
     background:
-        linear-gradient(270deg, rgba(5, 5, 5, 0.92) 0%, rgba(5, 5, 5, 0.68) 42%, rgba(5, 5, 5, 0.24) 100%),
-        linear-gradient(to top, rgba(5, 5, 5, 0.94) 0%, rgba(5, 5, 5, 0.15) 45%, rgba(5, 5, 5, 0.35) 100%);
+        linear-gradient(270deg, rgba(10, 10, 10, 0.94) 0%, rgba(10, 10, 10, 0.72) 42%, rgba(10, 10, 10, 0.32) 100%),
+        linear-gradient(to top, rgba(10, 10, 10, 0.96) 0%, rgba(10, 10, 10, 0.18) 45%, rgba(10, 10, 10, 0.38) 100%);
 }
 
 .hero::after {
@@ -766,7 +779,7 @@ body.menu-open .mobile-toggle span:nth-child(3) {
     z-index: -1;
     pointer-events: none;
     background:
-        radial-gradient(circle at 12% 78%, rgba(198, 166, 100, 0.2), transparent 42%),
+        radial-gradient(circle at 12% 78%, rgba(185, 160, 126, 0.18), transparent 42%),
         linear-gradient(to bottom, rgba(0, 0, 0, 0.25), transparent 25%);
 }
 
@@ -783,7 +796,7 @@ body.menu-open .mobile-toggle span:nth-child(3) {
 .hero-title {
     font-size: clamp(2.9rem, 6.6vw, 5.8rem);
     line-height: 1.12;
-    font-weight: 400;
+    font-weight: 500;
     color: var(--paper);
     margin-block: 1.6rem 1.8rem;
 }
@@ -791,12 +804,8 @@ body.menu-open .mobile-toggle span:nth-child(3) {
 .hero-title .line {
     display: block;
     overflow: hidden;
-    /* Arabic ascenders/descenders extend past a 1.12 line box; keep a little
-       breathing room while the reveal mask is active. */
     padding-block: 0.14em;
     margin-block: -0.14em;
-    /* Release the mask once both lines have finished rising, otherwise the
-       glyph tails stay clipped at rest. */
     animation: line-clip-release 0.01s linear 1.55s forwards;
 }
 
@@ -821,7 +830,7 @@ body.menu-open .mobile-toggle span:nth-child(3) {
 
 .hero-desc {
     max-width: 570px;
-    font-size: 1.1rem;
+    font-size: 1.05rem;
     font-weight: 300;
     line-height: 1.95;
     color: rgba(255, 255, 255, 0.72);
@@ -901,7 +910,7 @@ body.menu-open .mobile-toggle span:nth-child(3) {
 /* ------------------------------ Marquee ---------------------------------- */
 .marquee {
     background: var(--ink);
-    border-block: 1px solid rgba(198, 166, 100, 0.22);
+    border-block: 1px solid rgba(185, 160, 126, 0.22);
     overflow: hidden;
     padding-block: 1.15rem;
     position: relative;
@@ -1197,8 +1206,8 @@ body.menu-open .mobile-toggle span:nth-child(3) {
     inset: 0;
     z-index: -1;
     background:
-        radial-gradient(circle at 20% 20%, rgba(198, 166, 100, 0.16), transparent 42%),
-        radial-gradient(circle at 85% 85%, rgba(198, 166, 100, 0.1), transparent 40%);
+        radial-gradient(circle at 20% 20%, rgba(185, 160, 126, 0.16), transparent 42%),
+        radial-gradient(circle at 85% 85%, rgba(185, 160, 126, 0.1), transparent 40%);
 }
 
 .cta::after {
@@ -1209,7 +1218,7 @@ body.menu-open .mobile-toggle span:nth-child(3) {
     width: min(78vw, 760px);
     aspect-ratio: 1;
     transform: translate(50%, -50%);
-    border: 1px solid rgba(198, 166, 100, 0.16);
+    border: 1px solid rgba(185, 160, 126, 0.16);
     border-radius: 50%;
     pointer-events: none;
 }
@@ -1247,7 +1256,7 @@ body.menu-open .mobile-toggle span:nth-child(3) {
 
 /* ------------------------------ Footer ----------------------------------- */
 .site-footer {
-    background: #070707;
+    background: #101010;
     color: rgba(255, 255, 255, 0.6);
     padding-top: clamp(4rem, 7vw, 6rem);
     position: relative;
@@ -1259,7 +1268,7 @@ body.menu-open .mobile-toggle span:nth-child(3) {
     inset-inline: 0;
     top: 0;
     height: 1px;
-    background: linear-gradient(90deg, transparent, rgba(198, 166, 100, 0.65), transparent);
+    background: linear-gradient(90deg, transparent, rgba(185, 160, 126, 0.6), transparent);
 }
 
 .footer-grid {
@@ -1319,8 +1328,8 @@ body.menu-open .mobile-toggle span:nth-child(3) {
 }
 
 .footer-links a:hover {
-    color: var(--gold-2);
-    transform: translateX(-5px);
+    color: var(--accent-2);
+    transform: translateX(-4px);
 }
 
 .footer-contact li {
@@ -1339,7 +1348,7 @@ body.menu-open .mobile-toggle span:nth-child(3) {
 }
 
 .footer-contact a:hover {
-    color: var(--gold-2);
+    color: var(--accent-2);
 }
 
 .footer-social {
@@ -1362,8 +1371,8 @@ body.menu-open .mobile-toggle span:nth-child(3) {
 
 .footer-social a:hover {
     color: var(--ink);
-    background: var(--gold);
-    border-color: var(--gold);
+    background: var(--accent);
+    border-color: var(--accent);
     transform: translateY(-3px);
 }
 
@@ -1387,8 +1396,8 @@ body.menu-open .mobile-toggle span:nth-child(3) {
 /* --------------------------- Reveal / Motion ----------------------------- */
 /* html.js [data-reveal] {
     opacity: 0;
-    transform: translateY(38px);
-    transition: opacity 0.95s var(--ease-out), transform 0.95s var(--ease-out);
+    transform: translateY(28px);
+    transition: opacity 0.9s var(--ease-out), transform 0.9s var(--ease-out);
     transition-delay: var(--reveal-delay, 0s);
     will-change: opacity, transform;
 }
@@ -1568,7 +1577,7 @@ html.js .img-reveal.is-revealed {
 .preloader-name {
     font-family: var(--font-display);
     font-size: 1.9rem;
-    font-weight: 700;
+    font-weight: 600;
     margin-top: 1.2rem;
     color: var(--paper);
 }
@@ -1754,8 +1763,6 @@ html.js .img-reveal.is-revealed {
         min-height: 100svh;
     }
 
-    /* The English eyebrow is long; without these tweaks it wraps to two
-       awkward lines on 360–390px screens. */
     .hero .eyebrow {
         font-size: 0.66rem;
         letter-spacing: 0.14em;
@@ -1819,7 +1826,6 @@ html.js .img-reveal.is-revealed {
     }
 }
 
-/* Short phones (e.g. 320×568): keep the hero CTA above the fold. */
 @media (max-width: 680px) and (max-height: 700px) {
     .hero-inner {
         padding-top: calc(var(--header-h) + 1rem);
@@ -1884,9 +1890,9 @@ html.js .img-reveal.is-revealed {
 
 /* ---------------------- Auction identity typography ---------------------- */
 /* Ruaq Arabic is reserved for auction content only, keeping the general
-   brand typography (Amiri / Tajawal / Cormorant) untouched. Lama Sans is
-   first in the stack, but its unicode-range only covers numerals, so Arabic
-   always resolves to Ruaq while every digit resolves to Lama Sans. */
+   brand typography untouched. Lama Sans is first in the stack, but its
+   unicode-range only covers numerals, so Arabic always resolves to Ruaq
+   while every digit resolves to Lama Sans. */
 .auctions-section,
 .auctions-page-wrapper,
 .filters-section,
@@ -1969,8 +1975,7 @@ html.js .img-reveal.is-revealed {
     font-weight: 500;
 }
 
-/* Two-color identity inside auction content. Teal is reserved for accents,
-   marks and large type; navy carries readable text on light surfaces. */
+/* Two-color identity inside auction content. */
 .auctions-section .section-title {
     color: var(--auction-dark);
 }
@@ -2025,7 +2030,7 @@ html.js .img-reveal.is-revealed {
     background: var(--auction-teal);
 }
 
-/* Numeral-only stacks keep Latin labels in Cormorant and digits in Lama. */
+/* Numeral-only stacks keep Latin labels in Inter/Jost and digits in Lama. */
 .auction-card .auction-index,
 .properties-header .properties-count {
     font-family: 'Lama Sans', var(--font-latin);
